@@ -12,7 +12,7 @@ $versionTag = "$($versionInfo.version)-build$($versionInfo.buildNumber)"
 $versionInfo | ConvertTo-Json | Set-Content $versionFile
 
 # Image details
-$imageName = "monkizzle/unifikillswitch"
+$imageName = "ghcr.io/monkizzle/unifi-killswitch"
 
 Write-Host "Building version: $versionTag"
 

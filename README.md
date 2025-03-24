@@ -42,7 +42,7 @@ A modern web application for managing UniFi network clients with an intuitive in
 
 1. In your Unraid dashboard, go to the "Docker" tab and click "Add Container"
 2. Configure the container:
-   - Repository: `monkizzle/unifikillswitch:latest`
+   - Repository: `ghcr.io/monkizzle/unifi-killswitch:main`
    - Container Name: `unifikillswitch`
    - Port Mapping: Add a new port mapping
      - Container Port: `3000`
