@@ -24,13 +24,13 @@ docker build `
     .
 
 if ($LASTEXITCODE -eq 0) {
-    Write-Host "Build successful, pushing to DockerHub..."
+    Write-Host "Build successful, pushing to GitHub Container Registry..."
     
-    # Push both tags to DockerHub
+    # Push both tags to GitHub Container Registry
     docker push "${imageName}:latest"
     docker push "${imageName}:${versionTag}"
 
-    Write-Host "Successfully pushed version $versionTag to DockerHub"
+    Write-Host "Successfully pushed version $versionTag to GitHub Container Registry"
     Write-Host "Tags pushed:"
     Write-Host "  - ${imageName}:latest"
     Write-Host "  - ${imageName}:${versionTag}"
@@ -40,7 +40,7 @@ if ($LASTEXITCODE -eq 0) {
     Write-Host "Version: $($versionInfo.version)"
     Write-Host "Build number: $($versionInfo.buildNumber)"
 } else {
-    Write-Host "Build failed, not pushing to DockerHub"
+    Write-Host "Build failed, not pushing to GitHub Container Registry"
     # Revert build number increment
     $versionInfo.buildNumber = $versionInfo.buildNumber - 1
     $versionInfo | ConvertTo-Json | Set-Content $versionFile
