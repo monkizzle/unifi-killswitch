@@ -115,12 +115,15 @@ export default function UnifiClients() {
   const handleBlockClient = async (mac: string, currentlyBlocked: boolean) => {
     try {
       setLoading(true);
-      const response = await fetch(`/api/unifi/block`, {
+      const response = await fetch(`/api/unifi`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ mac, block: !currentlyBlocked }),
+        body: JSON.stringify({ 
+          mac, 
+          action: currentlyBlocked ? 'unblock' : 'block' 
+        }),
       });
 
       if (!response.ok) {
@@ -135,6 +138,12 @@ export default function UnifiClients() {
             : client
         )
       );
+
+      // Save the updated state to the clients API
+      await saveClientData(mac, {
+        blocked: !currentlyBlocked,
+        lastBlockedAt: !currentlyBlocked ? new Date() : null
+      });
 
     } catch (error) {
       console.error('Error updating block state:', error);

@@ -22,16 +22,19 @@ COPY --from=deps /app/prisma ./prisma
 # Copy source code
 COPY . .
 
+# Create public directory if it doesn't exist
+RUN mkdir -p public
+
 # Build application
-ENV NEXT_TELEMETRY_DISABLED 1
+ENV NEXT_TELEMETRY_DISABLED=1
 RUN npm run build
 
 # Stage 3: Runner
 FROM node:18-alpine AS runner
 WORKDIR /app
 
-ENV NODE_ENV production
-ENV NEXT_TELEMETRY_DISABLED 1
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
 
 # Install SQLite and necessary tools
 RUN apk add --no-cache sqlite shadow
@@ -46,8 +49,10 @@ ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
 ENV DATABASE_URL=file:/app/data/prod.db
 
+# Create public directory
+RUN mkdir -p public
+
 # Copy necessary files from builder
-COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/prisma ./prisma
@@ -85,7 +90,7 @@ RUN echo '#!/bin/sh' > /app/start.sh && \
 # Add labels for version tracking
 LABEL org.opencontainers.image.title="UniFi Client Manager"
 LABEL org.opencontainers.image.description="A web UI for managing UniFi network clients"
-LABEL org.opencontainers.image.source="https://github.com/yourusername/unifi-client-manager"
+LABEL org.opencontainers.image.source="https://github.com/monkizzle/unifi-killswitch"
 ARG VERSION
 LABEL org.opencontainers.image.version=${VERSION:-unknown}
 
