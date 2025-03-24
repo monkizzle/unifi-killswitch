@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  unipanel:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - UNIFI_USERNAME=${UNIFI_USERNAME}
+      - UNIFI_PASSWORD=${UNIFI_PASSWORD}
+      - UNIFI_CONTROLLER=${UNIFI_CONTROLLER}
+      - UNIFI_PORT=${UNIFI_PORT}
+      - UNIFI_SITE=${UNIFI_SITE}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+      start_period: 5s 
